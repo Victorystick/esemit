@@ -1,0 +1,21 @@
+{
+  "name": "esemit",
+  "version": "0.1.0",
+  "description": "ESTree code emitter",
+  "main": "index.js",
+  "scripts": {
+    "build:test": "rollup -c -i test/test.js -o tmp/test.js",
+    "lint": "eslint lib/ test/",
+    "pretest:lazy": "npm run build:test",
+    "test:lazy": "mocha tmp/test.js",
+    "test": "npm run lint && npm run test:lazy",
+    "test:watch": "watch 'npm run test:lazy' lib test"
+  },
+  "author": "Oskar Segersvärd",
+  "license": "MIT",
+  "devDependencies": {
+    "mocha": "^2.4.5",
+    "rollup": "^0.25.4",
+    "watch": "^0.17.1"
+  }
+}
