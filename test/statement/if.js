@@ -1,15 +1,18 @@
 import {
+	a,
+	b,
 	code,
-	identifier,
 	block,
 } from '../util.js';
+
+const empty = block( [] );
 
 export default function () {
 	it( 'if (a) {}', () => {
 		const ast = {
 			type: 'IfStatement',
-			test: identifier( 'a' ),
-			consequent: block( [] ),
+			test: a,
+			consequent: empty,
 		};
 
 		code({
@@ -33,9 +36,9 @@ export default function () {
 	it( 'if (a) {} else {}', () => {
 		const ast = {
 			type: 'IfStatement',
-			test: identifier( 'a' ),
-			consequent: block( [] ),
-			alternate: block( [] ),
+			test: a,
+			consequent: empty,
+			alternate: empty,
 		};
 
 		code({
@@ -52,6 +55,37 @@ export default function () {
 		code({
 			ast,
 			code: 'if ( a ) {} else {}',
+			options: { inBracketSpace: ' ' },
+		});
+	});
+
+	it( 'if (a) {} else if (b) {}', () => {
+		const ast = {
+			type: 'IfStatement',
+			test: a,
+			consequent: empty,
+			alternate: {
+				type: 'IfStatement',
+				test: b,
+				consequent: empty,
+				alternate: null,
+			},
+		};
+
+		code({
+			ast,
+			code: 'if (a) {} else if (b) {}',
+		});
+
+		code({
+			ast,
+			code: 'if(a){}else if(b){}',
+			options: { compress: true },
+		});
+
+		code({
+			ast,
+			code: 'if ( a ) {} else if ( b ) {}',
 			options: { inBracketSpace: ' ' },
 		});
 	});
