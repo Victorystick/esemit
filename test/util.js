@@ -12,7 +12,7 @@ export function code( config ) {
 export function indent( str ) {
 	str = str.join( '' );
 
-	const match = /\n(\t+)/.exec( str );
+	const match = /^\n(\t+)/.exec( str );
 
 	return str.split( match[ 1 ] ).slice( 1 ).join( '' );
 }
@@ -22,13 +22,11 @@ export const a = identifier( 'a' ),
 	c = identifier( 'c' );
 
 export function arrow( params, body ) {
-	const expression = body.type !== 'BlockStatement';
-
 	return {
 		type: 'ArrowFunctionExpression',
 		params,
 		body,
-		expression,
+		expression: body.type !== 'BlockStatement',
 	};
 }
 

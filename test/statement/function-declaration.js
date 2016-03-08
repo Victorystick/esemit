@@ -1,7 +1,12 @@
 import {
+	block,
 	code,
+	exprStmt,
 	identifier,
 	indent,
+	literal,
+	returnStmt,
+	yieldExpr,
 } from '../util.js';
 
 export default function () {
@@ -13,15 +18,9 @@ export default function () {
 				params: [
 					identifier( 'x' ),
 				],
-				body: {
-					type: 'BlockStatement',
-					body: [
-						{
-							type: 'ReturnStatement',
-							argument: identifier( 'x' ),
-						},
-					],
-				},
+				body: block([
+					returnStmt( identifier( 'x' ) ),
+				]),
 			},
 			code: indent`
 			function identity(x) {
@@ -37,28 +36,16 @@ export default function () {
 			params: [
 				identifier( 'x' ),
 			],
-			body: {
-				type: 'BlockStatement',
-				body: [
-					{
-						type: 'ReturnStatement',
-						argument: {
-							type: 'FunctionExpression',
-							id: null,
-							params: [],
-							body: {
-								type: 'BlockStatement',
-								body: [
-									{
-										type: 'ReturnStatement',
-										argument: identifier( 'x' ),
-									},
-								],
-							},
-						},
-					},
-				],
-			},
+			body: block([
+				returnStmt({
+					type: 'FunctionExpression',
+					id: null,
+					params: [],
+					body: block([
+						returnStmt( identifier( 'x' ) ),
+					]),
+				}),
+			]),
 		};
 
 		code({
@@ -74,6 +61,34 @@ export default function () {
 		code({
 			ast,
 			code: 'function constant(x){return function(){return x;};}',
+			options: { compress: true },
+		});
+	});
+
+	it( 'generator', () => {
+		const ast = {
+			type: 'FunctionDeclaration',
+			id: identifier( 'foo' ),
+			generator: true,
+			params: [],
+			body: block([
+				exprStmt( yieldExpr( literal( 1 ) ) ),
+				exprStmt( yieldExpr( literal( 2 ) ) ),
+			]),
+		};
+
+		code({
+			ast,
+			code: indent`
+			function* foo() {
+				yield 1;
+				yield 2;
+			}`,
+		});
+
+		code({
+			ast,
+			code: 'function*foo(){yield 1;yield 2;}',
 			options: { compress: true },
 		});
 	});
