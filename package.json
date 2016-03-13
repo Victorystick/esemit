@@ -3,7 +3,11 @@
   "version": "0.1.0",
   "description": "ESTree code emitter",
   "main": "index.js",
+  "bin": {
+    "esemit": "./bin/esemit.js"
+  },
   "scripts": {
+    "build:cjs": "rollup -c -i lib/index.js -o dist/esemit.js",
     "build:test": "rollup -c -i test/test.js -o tmp/test.js",
     "lint": "eslint lib/ test/",
     "pretest:lazy": "npm run build:test",
@@ -17,5 +21,8 @@
     "mocha": "^2.4.5",
     "rollup": "^0.25.4",
     "watch": "^0.17.1"
+  },
+  "dependencies": {
+    "source-map": "^0.5.3"
   }
 }
