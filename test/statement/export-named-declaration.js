@@ -55,6 +55,6 @@ export default function () {
 			ast,
 			code: 'export const a=1,b=2;',
 			options: { compress: true },
-		})
+		});
 	});
 }

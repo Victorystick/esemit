@@ -18,9 +18,9 @@ export default function () {
 		code({
 			ast: {
 				type: 'TemplateLiteral',
-				quasis: [{
+				quasis: [ {
 					value: { raw: 'foo' },
-				}],
+				} ],
 			},
 			code: '`foo`',
 		});
